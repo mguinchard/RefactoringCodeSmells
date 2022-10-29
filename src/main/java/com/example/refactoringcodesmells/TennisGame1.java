@@ -1,77 +1,55 @@
 package com.example.refactoringcodesmells;
 
-public class TennisGame1 implements TennisGame {
-    
-    private int m_score1 = 0;
-    private int m_score2 = 0;
-    private String player1Name;
-    private String player2Name;
+import org.apache.commons.lang3.StringUtils;
 
-    public TennisGame1(String player1Name, String player2Name) {
-        this.player1Name = player1Name;
-        this.player2Name = player2Name;
-    }
+public class TennisGame1 implements TennisGame {
+
+    private int mScore1 = 0;
+    private int mScore2 = 0;
 
     public void wonPoint(String playerName) {
-        if (playerName == "player1")
-            m_score1 += 1;
-        else
-            m_score2 += 1;
+        if (StringUtils.equals(playerName, "player1")) {
+            mScore1 = mScore1 + 1;
+        } else {
+            mScore2 = mScore2 + 1;
+        }
     }
 
     public String getScore() {
-        String score = "";
-        int tempScore=0;
-        if (m_score1==m_score2)
-        {
-            switch (m_score1)
-            {
-                case 0:
-                        score = "Love-All";
-                    break;
-                case 1:
-                        score = "Fifteen-All";
-                    break;
-                case 2:
-                        score = "Thirty-All";
-                    break;
-                default:
-                        score = "Deuce";
-                    break;
-                
-            }
-        }
-        else if (m_score1>=4 || m_score2>=4)
-        {
-            int minusResult = m_score1-m_score2;
-            if (minusResult==1) score ="Advantage player1";
-            else if (minusResult ==-1) score ="Advantage player2";
-            else if (minusResult>=2) score = "Win for player1";
-            else score ="Win for player2";
-        }
-        else
-        {
-            for (int i=1; i<3; i++)
-            {
-                if (i==1) tempScore = m_score1;
-                else { score+="-"; tempScore = m_score2;}
-                switch(tempScore)
-                {
-                    case 0:
-                        score+="Love";
-                        break;
-                    case 1:
-                        score+="Fifteen";
-                        break;
-                    case 2:
-                        score+="Thirty";
-                        break;
-                    case 3:
-                        score+="Forty";
-                        break;
+        StringBuilder score = new StringBuilder();
+        int tempScore;
+        if (mScore1 == mScore2) {
+            String scoreTmp = switch (mScore1) {
+                case 0 -> "Love-All";
+                case 1 -> "Fifteen-All";
+                case 2 -> "Thirty-All";
+                default -> "Deuce";
+            };
+            score.append(scoreTmp);
+        } else if (mScore1 >= 4 || mScore2 >= 4) {
+            int minusResult = mScore1 - mScore2;
+            if (minusResult == 1) score.append("Advantage player1");
+            else if (minusResult == -1) score.append("Advantage player2");
+            else if (minusResult >= 2) score.append("Win for player1");
+            else score.append("Win for player2");
+        } else {
+            for (int i = 1; i < 3; i++) {
+                if (i == 1) {
+                    tempScore = mScore1;
+                } else {
+                    score.append("-");
+                    tempScore = mScore2;
                 }
+
+                String text = switch (tempScore) {
+                    case 0 -> "Love";
+                    case 1 -> "Fifteen";
+                    case 2 -> "Thirty";
+                    default -> "Forty";
+                };
+                score.append(text);
             }
         }
-        return score;
+        return score.toString();
     }
 }

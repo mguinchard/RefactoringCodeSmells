@@ -1,5 +1,7 @@
 package com.example.refactoringcodesmells;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class TennisGame4 implements TennisGame {
 
     int serverScore;
@@ -62,7 +64,7 @@ class TennisResult {
     }
 
     String format() {
-        if ("".equals(this.receiverScore))
+        if (StringUtils.EMPTY.equals(this.receiverScore))
             return this.serverScore;
         if (serverScore.equals(receiverScore))
             return serverScore + "-All";
@@ -86,7 +88,7 @@ class Deuce implements ResultProvider {
     @Override
     public TennisResult getResult() {
         if (game.isDeuce())
-            return new TennisResult("Deuce", "");
+            return new TennisResult("Deuce", StringUtils.EMPTY);
         return this.nextResult.getResult();
     }
 }
@@ -103,7 +105,7 @@ class GameServer implements ResultProvider {
     @Override
     public TennisResult getResult() {
         if (game.serverHasWon())
-            return new TennisResult("Win for " + game.server, "");
+            return new TennisResult("Win for " + game.server, StringUtils.EMPTY);
         return this.nextResult.getResult();
     }
 }
@@ -120,7 +122,7 @@ class GameReceiver implements ResultProvider {
     @Override
     public TennisResult getResult() {
         if (game.receiverHasWon())
-            return new TennisResult("Win for " + game.receiver, "");
+            return new TennisResult("Win for " + game.receiver, StringUtils.EMPTY);
         return this.nextResult.getResult();
     }
 }
@@ -137,7 +139,7 @@ class AdvantageServer implements ResultProvider {
     @Override
     public TennisResult getResult() {
         if (game.serverHasAdvantage())
-            return new TennisResult("Advantage " + game.server, "");
+            return new TennisResult("Advantage " + game.server, StringUtils.EMPTY);
         return this.nextResult.getResult();
     }
 }
@@ -155,7 +157,7 @@ class AdvantageReceiver implements ResultProvider {
     @Override
     public TennisResult getResult() {
         if (game.receiverHasAdvantage())
-            return new TennisResult("Advantage " + game.receiver, "");
+            return new TennisResult("Advantage " + game.receiver, StringUtils.EMPTY);
         return this.nextResult.getResult();
     }
 }
